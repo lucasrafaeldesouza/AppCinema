@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+
+  <meta charset="UTF-8">
+  
+<link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+
+<link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+<link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+
+
+  <title>CodePen - Purchase of a movie ticket</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  
+  
+<style>
+body {
+  background-color: #24262c;
+}
+a{
+    color:blue;
+    font-size: 30px;
+    
+}
+
+.hall {
+  font-family: "Open Sans";
+  font-size: 16px;
+  color: #fff;
+  overflow: hidden;
+}
+.hall__screen {
+  margin: 0 auto;
+  height: 150px;
+  width: 450px;
+  margin-bottom: -15px;
+  background-image: url("");
+  background-size: cover;
+  background-position: center;
+  transform: perspective(1000px) rotateX(-30deg);
+  overflow: hidden;
+  box-shadow: 0 40px 55px -17px rgba(255, 255, 255, 0.2);
+}
+
+.seats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: perspective(1000px) rotateX(30deg);
+  counter-reset: RowLeft RowRight;
+}
+.seats__row {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  font-size: 10px;
+}
+.seats__row:before, .seats__row:after {
+  position: absolute;
+  top: 10px;
+  width: 10px;
+  color: #fff;
+  opacity: 0.5;
+}
+.seats__row:before {
+  left: -15px;
+  text-align: right;
+  counter-increment: RowLeft;
+  content: counter(RowLeft);
+}
+.seats__row:after {
+  right: -15px;
+  text-align: left;
+  counter-increment: RowRight;
+  content: counter(RowRight);
+}
+.seats__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 18px;
+  width: 18px;
+  margin: 8px;
+  padding: 3px;
+  background-color: #03a9f4;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.1s ease;
+}
+.seats__item:hover {
+  transform: scale(1.4);
+}
+.seats__item:hover .seats__item-num {
+  opacity: 1;
+}
+.seats__item_selected {
+  background-color: #ff9800;
+  transform: scale(1.4);
+  z-index: 10;
+  box-shadow: 0 3px 10px 0 rgba(255, 152, 0, 0.6);
+}
+.seats__item_selected .seats__item-num {
+  opacity: 1;
+}
+.seats__item-num {
+  opacity: 0;
+  color: #fff;
+  transition: 0.1s ease;
+}
+
+.info-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding: 30px;
+  background-color: #444852;
+}
+.info-box__price {
+  margin: 0;
+  text-align: left;
+  font-size: 30px;
+}
+.info-box__price-value {
+  font-weight: 700;
+}
+
+.button {
+  height: 50px;
+  padding: 10px 30px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #03a9f4;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.button:disabled {
+  opacity: 0.2;
+}
+
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+
+</head>
+
+<body translate="no" >
+  <div class="hall">
+  <div class="hall__screen"></div>
+  <div class="seats"></div>
+  <div class="info-box">
+    <p class="info-box__price"></p>
+    <a class="btn btn-primary" href="spider.html" role="button">COMPRAR</a>
+</div>
+</div>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+
+  
+      <script id="rendered-js" >
+"use strict";
+
+// Observer to run multiple functions at the same time //
+
+class Observer {
+  constructor() {
+    this.storage = [];
+  }
+
+  subscribe(fn) {
+    this.storage.push(fn);
+  }
+
+  unsubscribe(fn) {
+    this.storage.filter(item => item !== fn);
+  }
+
+  broadcast(...data) {
+    this.storage.forEach(item => item(...data));
+  }}
+;
+
+// Hall class is responsible for creating row nodes and handling click event on it //
+
+class Hall {
+  constructor(element) {
+    this.space = element;
+    this.set = []; // Array of rows of all seats
+  }
+
+  fill(rowLength, setLength) {
+    for (let i = 0; i < setLength; i++) {if (window.CP.shouldStopExecution(0)) break;
+      const row = [];
+
+      for (let j = 0; j < rowLength; j++) {if (window.CP.shouldStopExecution(1)) break;
+        row[j] = new Seat();
+      }window.CP.exitedLoop(1);;
+
+      this.set[i] = row;
+    }window.CP.exitedLoop(0);;
+  }
+
+  createNodes() {
+    this.set.forEach(createRow.bind(this));
+
+    function createRow(row, index) {
+      const rowElement = document.createElement('div');
+      rowElement.className = 'seats__row';
+      rowElement.dataset.index = index;
+
+      row.forEach((seat, index) => {
+        seat.createNode(index, Number(rowElement.dataset.index));
+        rowElement.appendChild(seat.element);
+      });
+
+      this.space.appendChild(rowElement);
+    };
+
+    this.space.addEventListener('click', this.handleClick.bind(this));
+  }
+
+  handleClick({ target, currentTarget }) {
+    while (target !== currentTarget) {if (window.CP.shouldStopExecution(2)) break;
+      if (target.classList.contains('seats__item')) {
+        const rowIndex = target.parentNode.dataset.index;
+        const seatIndex = target.dataset.index;
+        const currentHash = String(rowIndex + seatIndex);
+        const currentSeat = this.set[rowIndex][seatIndex];
+
+        currentSeat.toggleSelection();
+        updateObserver.broadcast(currentHash, currentSeat);
+      };
+
+      target = target.parentNode;
+    }window.CP.exitedLoop(2);;
+  }}
+;
+
+// Seat class creates the seat nodes  // 
+
+class Seat {
+  constructor() {
+    this.element = null;
+    this.numberElement = null;
+    this.number = null;
+    this.row = null;
+    this.availible = true;
+  }
+
+  createNode(index, row) {
+    this.element = document.createElement('div');
+    this.numberElement = document.createElement('span');
+
+    this.element.className = 'seats__item';
+    this.numberElement.className = 'seats__item-num';
+
+    this.number = index + 1;
+    this.row = row + 1;
+
+    this.element.dataset.index = index;
+    this.numberElement.textContent = this.number;
+    this.element.appendChild(this.numberElement);
+  }
+
+  toggleSelection() {
+    this.element.classList.toggle('seats__item_selected');
+    this.availible = !this.availible;
+  }}
+;
+
+// Counter updates the total price //
+
+class Counter {
+  constructor(element) {
+    this.element = element;
+    this.storage = new Map();
+    this.total = 0;
+    this.currency = 'R$';
+    this.price = 18;
+      }
+
+  add(key, value) {
+    this.storage.set(key, value);
+    this.total += this.price;
+  }
+
+  remove(key) {
+    this.storage.delete(key);
+    this.total -= this.price;
+  }
+
+  has(key) {
+    return this.storage.has(key);
+  }
+
+  toggleSum(hash, seat) {
+    this.has(hash) ? this.remove(hash) : this.add(hash, seat);
+  }
+
+  updateSum() {
+    const amount = this.storage.size;
+    const word = amount > 1 ? 'Ingressos' : 'Ingresso';
+    const sentence = `${amount} ${word} por ${this.currency}${this.total}`;
+
+    this.element.textContent = amount > 0 ? sentence : '';
+  }
+
+  isEmpty() {
+    return this.storage.size === 0;
+  }}
+;
+
+class Button {
+  constructor(element) {
+    this.element = element;
+  }
+
+  toggle() {
+    this.element.disabled = counter.isEmpty();
+  }}
+;
+
+const updateObserver = new Observer();
+const counter = new Counter(document.querySelector('.info-box__price'));
+const cinema = new Hall(document.querySelector('.seats'));
+const button = new Button(document.querySelector('.button'));
+
+cinema.fill(14, 9);
+cinema.createNodes();
+
+updateObserver.subscribe(counter.toggleSum.bind(counter));
+updateObserver.subscribe(counter.updateSum.bind(counter));
+updateObserver.subscribe(button.toggle.bind(button));
+//# sourceURL=pen.js
+    </script>
+
+  
+
+</body>
+
+</html>
+ 
