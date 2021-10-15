@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+
+  <meta charset="UTF-8">
+  
+<link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+
+<link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+<link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+
+
+  <title>CodePen - Animated Slider</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond:300,400,500|Roboto:400,500,700&display=swap" rel="stylesheet">
+
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css'>
+  
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background: black;
+  overflow: hidden;
+  
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li,
+p,
+a,
+button {
+  color: white;
+}
+
+h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+}
+
+.c-header {
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+}
+
+.c-header__title {
+  text-transform: uppercase;
+  font-size: 1.5em;
+  margin: 0 2rem;
+}
+
+.c-navigation {
+  flex-basis: 70%;
+}
+
+.c-navigation__list {
+  padding: 0;
+}
+
+.c-navigation__list-item {
+  display: inline-block;
+  margin: 0 2rem;
+  position: relative;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  opacity: 0.7;
+  font-weight: 500;
+}
+.c-navigation__list-item:after {
+  content: "";
+  width: 2px;
+  height: 100%;
+  background: white;
+  position: absolute;
+  display: inline-block;
+  right: -2rem;
+}
+
+.c-navigation__list-item:last-of-type:after {
+  background: transparent;
+}
+
+.c-navigation__list-item--active {
+  opacity: 1;
+}
+.c-navigation__list-item--active > a {
+  position: relative;
+}
+.c-navigation__list-item--active > a:after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #ff4c42;
+  position: absolute;
+  bottom: -0.4rem;
+  left: 0;
+}
+
+.c-cta {
+  display: flex;
+  align-items: center;
+}
+.c-cta > a {
+  font-size: 0.9em;
+  opacity: 0.7;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 2rem;
+}
+
+.c-cta__button {
+  border: 0;
+  background-color: transparent;
+  display: inline-block;
+}
+
+.c-cta__button__search {
+  width: 15px;
+  height: 15px;
+  margin-right: 3rem;
+}
+.c-cta__button__search svg {
+  width: inherit;
+  height: inherit;
+  fill: white;
+}
+
+.c-cta__button__menu {
+  width: 20px;
+  height: 2px;
+  background-color: white;
+  position: relative;
+}
+.c-cta__button__menu:after, .c-cta__button__menu:before {
+  content: "";
+  width: inherit;
+  height: inherit;
+  background-color: inherit;
+  position: absolute;
+  left: 0;
+}
+.c-cta__button__menu:after {
+  bottom: -5px;
+}
+.c-cta__button__menu:before {
+  top: -5px;
+}
+
+.c-socials {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  padding: 1.8rem 1.8rem 0.8rem 1.8rem;
+  z-index: 2;
+}
+
+.c-socials__list-item {
+  margin-bottom: 1rem;
+}
+.c-socials__list-item a svg {
+  width: 21px;
+  height: 21px;
+}
+
+.c-slide {
+  display: inline-flex !important;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+  will-change: background-size;
+  position: relative;
+  transition: 1s ease;
+  transition-delay: 0.4s;
+}
+.c-slide:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.61) 76%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#00000000", endColorstr="#9c000000", GradientType=0 );
+}
+
+.c-slide-content {
+  padding: 2rem;
+  margin: 0 auto;
+  width: 100%;
+  z-index: 2;
+  max-width: 1200px;
+}
+
+.c-slide__title {
+  font-size: 4em;
+  text-transform: uppercase;
+  letter-spacing: 20px;
+  transform: translateY(150px);
+  opacity: 0;
+  transition: 0.8s ease;
+  will-change: opacity, transform;
+}
+
+.c-slide__title--large,
+.c-slide__title--medium {
+  display: block;
+  font-size: 2.5em;
+  line-height: 110px;
+  transform: translateY(150px);
+  will-change: transform;
+  transition-delay: 0.4s;
+  position: relative;
+  transition: 1s ease;
+}
+
+.c-slide__title--medium {
+  font-size: 1.6em;
+  line-height: 100px;
+}
+
+.c-slide__subtitle {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.c-slide__body {
+  margin-top: 0.7rem;
+  opacity: 0;
+  line-height: 27px;
+}
+
+.c-slide__info {
+  transform: translateY(-150px);
+  transition: 0.8s ease;
+}
+
+.c-wrap {
+  padding: 2rem 0;
+  overflow: hidden;
+}
+
+.c-wrap--small {
+  max-width: 30%;
+}
+
+.c-wrap--line {
+  position: relative;
+}
+.c-wrap--line:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 1px;
+  background-color: white;
+  bottom: 0;
+  transition: 0.9s ease;
+  transition-delay: 0.4s;
+}
+
+.slick-list {
+  overflow: visible !important;
+}
+
+.animateIn .c-slide__title--large,
+.animateIn .c-slide__title--medium,
+.animateIn .c-slide__info,
+.animateIn .c-slide__title,
+.animateIn .c-slide__body,
+.initialAnimation .c-slide__title--large,
+.initialAnimation .c-slide__title--medium,
+.initialAnimation .c-slide__info,
+.initialAnimation .c-slide__title,
+.initialAnimation .c-slide__body {
+  transform: translateY(0);
+  opacity: 1;
+}
+.animateIn .c-wrap--line:after,
+.initialAnimation .c-wrap--line:after {
+  left: 0;
+  transform: translateX(0);
+  width: 100%;
+}
+
+.slick-list {
+  transition: 0.5s ease;
+}
+
+.u-scale-out {
+  transform: scale(0.6) !important;
+  transition: 0.5s ease;
+}
+
+.u-scale-in {
+  transform: scale(1);
+}
+
+@media only screen and (max-width: 1300px) {
+  .c-slide__title {
+    font-size: 3em;
+  }
+
+  .c-slide__title--large {
+    font-size: 2em;
+  }
+
+  .c-wrap--small {
+    max-width: 50%;
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .c-navigation {
+    display: none;
+  }
+
+  .c-header {
+    justify-content: space-between;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .c-slide__title--medium {
+    font-size: 1.3em;
+  }
+
+  .c-slide__title {
+    font-size: 2.5em;
+  }
+
+  .c-slide__title--large {
+    font-size: 1.5em;
+  }
+
+  .c-wrap--small {
+    max-width: 80%;
+  }
+}
+
+
+.nav {
+    width: 100%;
+    height: 65px;
+    position: fixed;
+    line-height: 65px;
+    text-align: center;
+}
+
+.nav div.logo {
+    float: left;
+    width: auto;
+    height: auto;
+    padding-left: 3rem;
+}
+
+.nav div.logo a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 2.5rem;
+}
+
+.nav div.logo a:hover {
+    color: #00E676;
+}
+
+.nav div.main_list {
+    height: 65px;
+    float: right;
+}
+
+.nav div.main_list ul {
+    width: 100%;
+    height: 65px;
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav div.main_list ul li {
+    width: auto;
+    height: 65px;
+    padding: 0;
+    padding-right: 3rem;
+}
+
+.nav div.main_list ul li a {
+    text-decoration: none;
+    color: #fff;
+    line-height: 65px;
+    font-size: 20px;
+}
+
+.nav div.main_list ul li a:hover {
+    color: red;
+}
+
+
+
+
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+
+</head>
+
+<body translate="no" >
+  <!-- Design and content inspired from Giulio Cuscito :- https://dribbble.com/shots/7129691--Blue-Planet-Carousel-Concept -->
+
+<header class='c-header'>
+
+  <nav class="nav">
+    <div class="container">
+        <div class="logo">
+        </div>
+        <div id="mainListDiv" class="main_list">
+            <ul class="navlinks">
+                <li><a href="filmes.html">Filmes</a></li>
+                <li><a href="breve.html">Em Breve</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="sócio.html">Seja Sócio</a></li>
+                <li><a href="produtos.html">Produtos</a></li>
+            </ul>
+        </div>
+        <span class="navTrigger">
+            <i></i>
+            <i></i>
+            <i></i>
+        </span>
+    </div>
+</nav>
+  
+</header>
+
+
+<section class='c-slider'>
+  <div class='c-slider-init'>
+
+    <div class='c-slide' style='background-image:url("https://www.proibidoler.com/wp-content/uploads/2018/08/assistir-filmes-em-salas-4dx-vale-a-pena3.jpg")'>
+      <div class='c-slide-content'>
+        <div class='c-wrap c-wrap--line'>
+          <h2 class='c-slide__title'>
+             
+            <span class='c-slide__title--large'>Salas de cinema em 3D</span>
+          </h2>
+        </div>
+        <div class='c-wrap c-wrap--small'>
+          <div class='c-slide__info'>
+            <p class='c-slide__body'>Nas salas 3D da rede Cinemaki você vive a experiência tridimensional REAL D 3D com muito mais emoção. Com a tecnologia REAL D 3D a fusão das imagens preserva a noção de profundidade e torna a sensação de mergulhar no universo do filme ainda mais intensa e verdadeira. Esse é o sistema de projeção líder mundial no segmento,.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='c-slide' style='background-image:url("https://www.teahub.io/photos/full/101-1019747_passeio-das-aguas-cinema.jpg")'>
+      <div class='c-slide-content'>
+        <div class='c-wrap c-wrap--line'>
+          <h2 class='c-slide__title'>
+            
+            <span class='c-slide__title--medium'>Maiores salas de cinema</span>
+          </h2>
+        </div>
+        <div class='c-wrap c-wrap--small'>
+          <div class='c-slide__info'>
+            <p class='c-slide__body'>Cinemaki é uma das três maiores redes de cinema do mundo. É uma empresa transnacional especializada em operar 
+              complexos cinematográficos multiplex e sua sede brasileira fica na cidade de Joinville.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='c-slide' style='background-image:url("https://www.gnccinemas.com.br/_files/view.php/crop/750x487/gnc/5880ab6791759.jpg")'>
+      <div class='c-slide-content'>
+        <div class='c-wrap c-wrap--line'>
+          <h2 class='c-slide__title'>
+            
+            <span class='c-slide__title--large'>Salas com camas</span>
+          </h2>
+        </div>
+        <div class='c-wrap c-wrap--small'>
+          <div class='c-slide__info'>
+            <p class='c-slide__body'>No Cinameki tem 11 camas com apoios de cabeça ajustáveis, lençóis cinza e bege e dois travesseiros. O espaço ainda conta com chinelos para cada cliente, para completar a sensação de conforto fora de casa e exime o público de ter 
+              que enfrentar aquelas cansativas filas para adquirir seu lanche.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script src='https://rawgit.com/cfoehrdes/slick/master/slick/slick.js'></script>
+      <script id="rendered-js" >
+jQuery(document).ready(function () {
+  jQuery(".c-slider-init").slick({
+    dots: false,
+    nav: false,
+    arrows: false,
+    infinite: true,
+    speed: 1200,
+    autoplaySpeed: 5000,
+    slidesToShow: 1,
+    adaptiveHeight: true,
+    autoplay: true,
+    draggable: false,
+    pauseOnFocus: false,
+    pauseOnHover: false });
+
+
+  jQuery(".slick-current").addClass("initialAnimation");
+
+  let transitionSetup = {
+    target: ".slick-list",
+    enterClass: "u-scale-out",
+    doTransition: function () {
+      var slideContainer = document.querySelector(this.target);
+      slideContainer.classList.add(this.enterClass);
+      jQuery(".slick-current").removeClass("animateIn");
+    },
+    exitTransition: function () {
+      var slideContainer = document.querySelector(this.target);
+      setTimeout(() => {
+        slideContainer.classList.remove(this.enterClass);
+        jQuery(".slick-current").addClass("animateIn");
+      }, 2000);
+    } };
+
+
+  var i = 0;
+  // On before slide change
+  jQuery(".c-slider-init").on("beforeChange", function (
+  event,
+  slick,
+  currentSlide,
+  nextSlide)
+  {
+    if (i == 0) {
+      event.preventDefault();
+      transitionSetup.doTransition();
+      i++;
+    } else {
+      i = 0;
+      transitionSetup.exitTransition();
+    }
+
+    jQuery(".c-slider-init").slick("slickNext");
+    jQuery(".slick-current").removeClass("initialAnimation");
+  });
+});
+//# sourceURL=pen.js
+    </script>
+
+  
+
+</body>
+
+</html>
+ 
