@@ -1,0 +1,166 @@
+*{
+	border-radius: 0 !important;
+}
+body{
+	margin: 30px;
+	border: 1px solid;
+	height: 580px;
+	padding: 10px;
+	padding: 10px;
+	overflow: hidden;
+}
+
+nav{
+	display: flex;
+}
+
+.h1{
+	font-size: 10px;	
+}
+
+.h2{
+	padding-top: 50px; 
+	color:#110659;
+	font-size: 28px;
+	left: 100px;
+}
+
+.h3, h3 {
+    font-size: 30px;
+}
+
+.h5{      
+	font-size: 12px;
+	padding-left: 3px;
+	position: relative;
+	top: -5px;
+}
+
+.h6{	
+	padding-top:55px;
+	padding-left: 88px;
+	font-size:30px;
+	position: relative;
+	top: 15px;
+	color: black;
+}
+
+.botao{
+	width: 210px;
+	margin: 50px;
+	height: 70px;   
+	color: black;        
+	background-color: #E4E4E4; 
+	font-size: 25px;
+}
+
+.sair{
+	width: 180px;
+	margin: 50px;
+	height: 50px !important;    
+	color: black;      
+	background-color: #E4E4E4; 
+	font-size: 25px;
+	position: relative;
+	top: 130px;
+}
+
+.modal-body{
+	max-height:800px;
+	border: 1px solid;
+	height: 580px;
+	padding: 10px;
+	padding: 10px;
+
+}
+
+.modal-lg{
+	max-width: 1400px;
+}
+
+.form-control {
+	position: relative;
+	top: 23px;
+	height: 35px;
+	max-width: 370px;
+}
+
+.controlAlign{
+	padding-left: 86px;
+	color: black;
+}
+
+.controlInput{
+	width: 200px;
+}
+
+.wait{
+    display: none;
+    vertical-align: middle;
+    align-items: center;
+    border: 1px solid #a5a3a3;
+    background: #ccc;
+    width: 240px;
+    height: 25px;
+}
+
+.wait > h3{
+    text-align: center;
+    font-size: 17px;
+    margin: 4px;
+}
+
+.red{
+	color: red;
+}
+
+.green {
+	color: green;
+}
+
+.readEtiq{
+	text-transform: uppercase;
+}
+
+.container {
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.response{
+	 font-size: 22px;
+ }
+ 
+ 
+ /* media query */
+@media (min-width: 992px){
+	.col-md-3 {
+		width: 30%;
+	}
+}
+
+@media (max-width: 992px) {
+	.sair {
+		margin: auto !important;
+		top: 61px !important;
+		right: 19px !important;
+		float: right;
+	}
+
+}
+
+@media (max-width: 990px) {
+	.controlInput{
+		position: relative;
+		left: 71px;
+	}
+}
+
+@media (max-width: 660px) {
+	.controlInput{
+		position: relative;
+		left: 71px;
+	}
+}
